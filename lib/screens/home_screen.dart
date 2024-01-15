@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
 
-  List<Map<String, String>> topCategoriesOne = [
+  final List<Map<String, String>> topCategoriesOne = [
     {
       "imgName": "1",
     },
@@ -36,7 +36,7 @@ class HomeScreen extends StatelessWidget {
       "imgName": "10",
     },
   ];
-  List<Map<String, String>> topCategoriesTwo = [
+  final List<Map<String, String>> topCategoriesTwo = [
     {
       "imgName": "10",
     },
@@ -200,9 +200,9 @@ class _SearchBarHeader extends StatelessWidget {
 }
 
 class _TopCategoriesOne extends StatelessWidget {
-  _TopCategoriesOne({required this.data});
+  const _TopCategoriesOne({required this.data});
 
-  List<Map<String, String>> data;
+  final List<Map<String, String>> data;
 
   @override
   Widget build(BuildContext context) {
