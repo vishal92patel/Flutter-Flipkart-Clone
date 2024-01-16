@@ -96,11 +96,129 @@ class HomeScreen extends StatelessWidget {
                 pinned: true,
                 collapsedHeight: 64,
               ),
+              const SliverToBoxAdapter(
+                child: _TopBannerOne(data: "assets/banner/b1.jpg"),
+              ),
               SliverToBoxAdapter(
                 child: _TopCategoriesOne(data: topCategoriesOne),
               ),
               SliverToBoxAdapter(
                 child: _TopCategoriesOne(data: topCategoriesTwo),
+              ),
+              const SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.all(5.0),
+              )),
+              SliverToBoxAdapter(
+                child: Container(
+                  color: theme.colorScheme.primaryContainer,
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text('Recently Viewed',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: theme.colorScheme.onPrimaryContainer,
+                      )),
+                ),
+              ),
+              const SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.all(5.0),
+              )),
+              SliverGrid(
+                delegate: SliverChildBuilderDelegate(
+                  (context, index) {
+                    return Container(
+                      alignment: Alignment.center,
+                      color: Colors.teal[100 * ((index + 1) % 10)],
+                      child: Text('grid item $index'),
+                    );
+                  },
+                  childCount: 9,
+                ),
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  mainAxisSpacing: 10,
+                  crossAxisSpacing: 10,
+                  childAspectRatio: 1.0,
+                ),
+              ),
+              const SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.all(5.0),
+              )),
+              const SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.all(5.0),
+              )),
+              SliverToBoxAdapter(
+                child: Container(
+                  color: theme.colorScheme.primaryContainer,
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text('Top Trending',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: theme.colorScheme.onPrimaryContainer,
+                      )),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.all(10.0),
+                sliver: SliverGrid.count(
+                  crossAxisCount: 4,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                  childAspectRatio: 1.0,
+                  children: <Widget>[
+                    Container(color: Colors.red),
+                    Container(color: Colors.green),
+                    Container(color: Colors.blue),
+                    Container(color: Colors.red),
+                  ],
+                ),
+              ),
+              const SliverToBoxAdapter(
+                  child: Padding(
+                padding: EdgeInsets.all(5.0),
+              )),
+              SliverToBoxAdapter(
+                child: Container(
+                  color: theme.colorScheme.primaryContainer,
+                  padding: const EdgeInsets.all(6.0),
+                  child: Text('Top Trending',
+                      style: TextStyle(
+                        fontSize: 24,
+                        color: theme.colorScheme.onPrimaryContainer,
+                      )),
+                ),
+              ),
+              SliverPadding(
+                padding: const EdgeInsets.all(10.0),
+                sliver: SliverGrid.extent(
+                  maxCrossAxisExtent: 200,
+                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 10.0,
+                  childAspectRatio: 1.0,
+                  children: <Widget>[
+                    Container(
+                      color: Colors.pink,
+                    ),
+                    Container(
+                      color: Colors.indigo,
+                    ),
+                    Container(
+                      color: Colors.orange,
+                    ),
+                    Container(
+                      color: Colors.pink,
+                    ),
+                    Container(
+                      color: Colors.indigo,
+                    ),
+                    Container(
+                      color: Colors.orange,
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
@@ -225,6 +343,31 @@ class _TopCategoriesOne extends StatelessWidget {
               ),
             );
           },
+        ),
+      ),
+    );
+  }
+}
+
+class _TopBannerOne extends StatelessWidget {
+  const _TopBannerOne({required this.data});
+
+  final String data;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: const Color(0xffFDF3DA),
+      margin: const EdgeInsets.fromLTRB(0, 0, 0, 6),
+      child: SizedBox(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+          child: SizedBox(
+            child: Image.asset(
+              data,
+              fit: BoxFit.cover,
+            ),
+          ),
         ),
       ),
     );
