@@ -70,7 +70,7 @@ class HomeScreen extends StatelessWidget {
     },
   ];
 
-  void onTap(BuildContext context) {
+  void onTap({required BuildContext context}) {
     Navigator.of(context).push(
       MaterialPageRoute(
         builder: (ctx) => const ProductListScreen(),
@@ -144,7 +144,7 @@ class HomeScreen extends StatelessWidget {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         alignment: Alignment.center,
                         color: Colors.teal[100 * ((index + 1) % 10)],
@@ -189,19 +189,19 @@ class HomeScreen extends StatelessWidget {
                   childAspectRatio: 1.0,
                   children: <Widget>[
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(color: Colors.red),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(color: Colors.green),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(color: Colors.blue),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(color: Colors.red),
                     ),
                   ],
@@ -231,37 +231,37 @@ class HomeScreen extends StatelessWidget {
                   childAspectRatio: 1.0,
                   children: <Widget>[
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         color: Colors.pink,
                       ),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         color: Colors.indigo,
                       ),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         color: Colors.orange,
                       ),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         color: Colors.pink,
                       ),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         color: Colors.indigo,
                       ),
                     ),
                     InkWell(
-                      onTap: () => onTap(context),
+                      onTap: () => onTap(context: context),
                       child: Container(
                         color: Colors.orange,
                       ),
@@ -370,7 +370,7 @@ class _TopCategoriesOne extends StatelessWidget {
   const _TopCategoriesOne({required this.data, required this.onTap});
 
   final List<Map<String, String>> data;
-  final Function onTap;
+  final Function({required BuildContext context}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -386,7 +386,7 @@ class _TopCategoriesOne extends StatelessWidget {
             return Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
               child: InkWell(
-                onTap: () => onTap(context),
+                onTap: () => onTap(context: context),
                 child: SizedBox(
                   child: Image.asset(
                     "assets/topCategories/${data[index]['imgName']}.jpg",
@@ -406,7 +406,7 @@ class _TopBannerOne extends StatelessWidget {
   const _TopBannerOne({required this.data, required this.onTap});
 
   final String data;
-  final Function onTap;
+  final Function({required BuildContext context}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -417,7 +417,7 @@ class _TopBannerOne extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
           child: InkWell(
-            onTap: () => onTap(context),
+            onTap: () => onTap(context: context),
             child: SizedBox(
               child: Image.asset(
                 data,
