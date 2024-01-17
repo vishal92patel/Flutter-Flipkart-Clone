@@ -370,7 +370,7 @@ class _TopCategoriesOne extends StatelessWidget {
   const _TopCategoriesOne({required this.data, required this.onTap});
 
   final List<Map<String, String>> data;
-  final Function({required BuildContext context}) onTap;
+  final void Function({required BuildContext context}) onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -406,7 +406,7 @@ class _TopBannerOne extends StatelessWidget {
   const _TopBannerOne({required this.data, required this.onTap});
 
   final String data;
-  final Function({required BuildContext context}) onTap;
+  final void Function({required BuildContext context}) onTap;
 
   @override
   Widget build(BuildContext context) {
