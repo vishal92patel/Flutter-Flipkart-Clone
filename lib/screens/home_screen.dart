@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:test_app/screens/product_list_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   HomeScreen({super.key});
@@ -69,6 +70,14 @@ class HomeScreen extends StatelessWidget {
     },
   ];
 
+  void onTap(BuildContext context) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (ctx) => const ProductListScreen(),
+      ),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
@@ -96,14 +105,21 @@ class HomeScreen extends StatelessWidget {
                 pinned: true,
                 collapsedHeight: 64,
               ),
-              const SliverToBoxAdapter(
-                child: _TopBannerOne(data: "assets/banner/b1.jpg"),
+              SliverToBoxAdapter(
+                child:
+                    _TopBannerOne(data: "assets/banner/b1.jpg", onTap: onTap),
               ),
               SliverToBoxAdapter(
-                child: _TopCategoriesOne(data: topCategoriesOne),
+                child: _TopCategoriesOne(
+                  data: topCategoriesOne,
+                  onTap: onTap,
+                ),
               ),
               SliverToBoxAdapter(
-                child: _TopCategoriesOne(data: topCategoriesTwo),
+                child: _TopCategoriesOne(
+                  data: topCategoriesTwo,
+                  onTap: onTap,
+                ),
               ),
               const SliverToBoxAdapter(
                   child: Padding(
@@ -127,10 +143,13 @@ class HomeScreen extends StatelessWidget {
               SliverGrid(
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
-                    return Container(
-                      alignment: Alignment.center,
-                      color: Colors.teal[100 * ((index + 1) % 10)],
-                      child: Text('grid item $index'),
+                    return InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        alignment: Alignment.center,
+                        color: Colors.teal[100 * ((index + 1) % 10)],
+                        child: Text('grid item $index'),
+                      ),
                     );
                   },
                   childCount: 9,
@@ -169,10 +188,22 @@ class HomeScreen extends StatelessWidget {
                   crossAxisSpacing: 10.0,
                   childAspectRatio: 1.0,
                   children: <Widget>[
-                    Container(color: Colors.red),
-                    Container(color: Colors.green),
-                    Container(color: Colors.blue),
-                    Container(color: Colors.red),
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(color: Colors.red),
+                    ),
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(color: Colors.green),
+                    ),
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(color: Colors.blue),
+                    ),
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(color: Colors.red),
+                    ),
                   ],
                 ),
               ),
@@ -199,23 +230,41 @@ class HomeScreen extends StatelessWidget {
                   crossAxisSpacing: 10.0,
                   childAspectRatio: 1.0,
                   children: <Widget>[
-                    Container(
-                      color: Colors.pink,
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        color: Colors.pink,
+                      ),
                     ),
-                    Container(
-                      color: Colors.indigo,
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        color: Colors.indigo,
+                      ),
                     ),
-                    Container(
-                      color: Colors.orange,
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        color: Colors.orange,
+                      ),
                     ),
-                    Container(
-                      color: Colors.pink,
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        color: Colors.pink,
+                      ),
                     ),
-                    Container(
-                      color: Colors.indigo,
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        color: Colors.indigo,
+                      ),
                     ),
-                    Container(
-                      color: Colors.orange,
+                    InkWell(
+                      onTap: () => onTap(context),
+                      child: Container(
+                        color: Colors.orange,
+                      ),
                     ),
                   ],
                 ),
@@ -318,9 +367,10 @@ class _SearchBarHeader extends StatelessWidget {
 }
 
 class _TopCategoriesOne extends StatelessWidget {
-  const _TopCategoriesOne({required this.data});
+  const _TopCategoriesOne({required this.data, required this.onTap});
 
   final List<Map<String, String>> data;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -335,10 +385,13 @@ class _TopCategoriesOne extends StatelessWidget {
           itemBuilder: (context, index) {
             return Padding(
               padding: const EdgeInsets.fromLTRB(0, 0, 8, 0),
-              child: SizedBox(
-                child: Image.asset(
-                  "assets/topCategories/${data[index]['imgName']}.jpg",
-                  fit: BoxFit.cover,
+              child: InkWell(
+                onTap: () => onTap(context),
+                child: SizedBox(
+                  child: Image.asset(
+                    "assets/topCategories/${data[index]['imgName']}.jpg",
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
             );
@@ -350,9 +403,10 @@ class _TopCategoriesOne extends StatelessWidget {
 }
 
 class _TopBannerOne extends StatelessWidget {
-  const _TopBannerOne({required this.data});
+  const _TopBannerOne({required this.data, required this.onTap});
 
   final String data;
+  final Function onTap;
 
   @override
   Widget build(BuildContext context) {
@@ -362,10 +416,13 @@ class _TopBannerOne extends StatelessWidget {
       child: SizedBox(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
-          child: SizedBox(
-            child: Image.asset(
-              data,
-              fit: BoxFit.cover,
+          child: InkWell(
+            onTap: () => onTap(context),
+            child: SizedBox(
+              child: Image.asset(
+                data,
+                fit: BoxFit.cover,
+              ),
             ),
           ),
         ),
