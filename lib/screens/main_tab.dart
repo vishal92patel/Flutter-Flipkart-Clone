@@ -28,11 +28,11 @@ class MainTab extends StatelessWidget {
           icon: const Icon(Icons.category),
           label: 'Categories',
         ),
-        BottomNavigationBarItem(
-          backgroundColor: theme.colorScheme.onPrimaryContainer,
-          icon: const Icon(Icons.notifications),
-          label: 'Notifications',
-        ),
+        // BottomNavigationBarItem(
+        //   backgroundColor: theme.colorScheme.onPrimaryContainer,
+        //   icon: const Icon(Icons.notifications),
+        //   label: 'Notifications',
+        // ),
         BottomNavigationBarItem(
           backgroundColor: theme.colorScheme.onPrimaryContainer,
           icon: const Icon(Icons.account_box),
@@ -42,6 +42,11 @@ class MainTab extends StatelessWidget {
           backgroundColor: theme.colorScheme.onPrimaryContainer,
           icon: const Icon(Icons.shopping_basket),
           label: 'Cart',
+        ),
+        BottomNavigationBarItem(
+          backgroundColor: theme.colorScheme.onPrimaryContainer,
+          icon: const Icon(Icons.candlestick_chart),
+          label: 'Advanced Chart',
         ),
       ],
       currentIndex: currentIndex,

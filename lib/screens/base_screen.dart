@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:test_app/screens/accounts_screen.dart';
+import 'package:test_app/screens/advanced_charts_screen.dart';
 import 'package:test_app/screens/cart_screen.dart';
 import 'package:test_app/screens/categories_screen.dart';
 import 'package:test_app/screens/home_screen.dart';
@@ -19,8 +19,9 @@ class _BaseScreenState extends State<BaseScreen> {
     HomeScreen(),
     const CategoriesScreen(),
     const NotificationsScreen(),
-    const AccountsScreen(),
+    // const AccountsScreen(),
     const CartScreen(),
+    const AdvancedCharts(),
   ];
   int selectedTabIndex = 0;
 

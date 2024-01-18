@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Advance Chart</title>
+    <link rel="shortcut icon" href="#" />
+    <!-- Fix for iOS Safari zooming bug -->
+    <meta
+      name="viewport"
+      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,minimum-scale=1.0"
+    />
+    <script type="text/javascript">
+      var onRealtimeCallback;
+      var scripData;
+    </script>
+    <script
+      type="text/javascript"
+      src="./charting_library.standalone.js"
+      defer
+    ></script>
+    <script type="text/javascript" src="./utils.js"></script>
+    <script type="text/javascript">
+      function customDataFeed() {
+        this.onReady = function (callback) {
+          setTimeout(() => {
+            callback({
+              supports_search: false,
+              supports_group_request: false,
+              supports_marks: true,
+              supports_timescale_marks: true,
+              supports_time: true,
+              exchanges: [
+                {
+                  value: "",
+                  name: "All Exchanges",
+                  desc: "",
+                },
+                {
+                  value: "NSE",
+                  name: "NSE",
+                  desc: "NSE",
+                },
+                {
+                  value: "BSE",
+                  name: "BSE",
+                  desc: "BSE",
+                },
+              ],
+              symbols_types: [
+                {
+                  name: "All types",
+                  value: "",
+                },
+                {
+                  name: "Stock",
+                  value: "stock",
+                },
+                {
+                  name: "Index",
+                  value: "index",
+                },
+              ],
+            });
+          }, 0);
+        };
+        this.searchSymbols = function (
+          userInput,
+          exchange,
+          symbolType,
+          onResult
+        ) {
+          onResult([
+            {
+              symbol: "",
+              full_name: "",
+              description: "",
+              exchange: "",
+              type: "",
+            },
+          ]);
+        };
+        this.resolveSymbol = function (
+          symbolName,
+          onResolve,
+          onError,
+          extension
+        ) {
+          setTimeout(() => {
+            onResolve({
+              name: scripData.dispSym,
+              full_name: scripData.dispSym,
+              base_name: [scripData.dispSym],
+              ticker: scripData.dispSym,
+              description: scripData.dispSym,
+              long_description: scripData.dispSym,
+              type: scripData.symbol,
+              session: "0915-1530",
+              exchange: scripData.exchange,
+              listed_exchange: scripData.exchange,
+              timezone: "Asia/Kolkata",
+              format: "price",
+              pricescale: 100,
+              minmov: 1,
+              minmov2: 0,
+              pointvalue: 1,
+              fractional: false,
+              has_seconds: false,
+              has_intraday: true,
+              has_daily: true,
+              has_weekly_and_monthly: true,
+              // seconds_multipliers: ["1"],
+              intraday_multipliers: ["1", "5", "15", "30", "60"],
+              daily_multipliers: ["1", "7", "15", "30", "60", "90"],
+              supported_resolutions: [
+                IResolutions._1min,
+                IResolutions._3min,
+                IResolutions._5min,
+                IResolutions._15min,
+                IResolutions._30min,
+                IResolutions._45min,
+                IResolutions._1hrs,
+                IResolutions._2hrs,
+                IResolutions._3hrs,
+                IResolutions._4hrs,
+                IResolutions._1D,
+                IResolutions._1W,
+                IResolutions._1M,
+              ],
+              has_empty_bars: true,
+              visible_plots_set: "ohlcv",
+              sector: "N/A",
+              industry: "N/A",
+              currency_code: "₹",
+              original_currency_code: "₹",
+              unit_id: "Qty",
+              original_unit_id: "Qty",
+              price_source_id: "Spot Price",
+            });
+          }, 0);
+        };
+        this.getBars = function (
+          symbolInfo,
+          resolution,
+          periodParams,
+          onResult,
+          onError
+        ) {
+          // callAPI(onResult, periodParams, resolution);
+        };
+        this.subscribeBars = function (
+          symbolInfo,
+          resolution,
+          onRealtimeCb,
+          subscriberUID,
+          onResetCacheNeededCallback
+        ) {
+          onRealtimeCallback = onRealtimeCb;
+        };
+        this.unsubscribeBars = function (subscriberUID) {};
+      }
+
+      function initOnReady() {
+        var widget = (window.tvWidget = new TradingView.widget({
+          // theme: window.encodedChartData.advanceChartConfig.theme,
+          debug: false,
+          symbol: scripData.dispSym,
+          interval: "1D",
+          // timeframe: '5Y',
+          container: "tv_chart_container",
+          timezone: "Asia/Kolkata",
+          datafeed: new customDataFeed(),
+          library_path: "",
+          locale: "en",
+          enabled_features: ["show_zoom_and_move_buttons_on_touch"], // fix_left_edge
+          disabled_features: [
+            "header_symbol_search",
+            "symbol_search_hot_key",
+            "header_compare",
+            "header_saveload",
+            "go_to_date",
+            "header_fullscreen_button",
+            // ...(window.encodedChartData?.advanceChartConfig
+            //   ?.disabled_features || []),
+          ],
+          // autosize: true, // NOT working in IOS landscape to portrait
+          // fullscreen: true, // NOT working in IOS landscape to portrait
+          height: "100%",
+          width: "100%",
+          time_scale: {
+            min_bar_spacing: 2,
+          },
+        }));
+
+        // window.tvWidget.onChartReady(function () {
+        //   tvWidget.changeTheme(window.encodedChartData.advanceChartConfig.theme);
+        //   window?.encodedChartData?.advanceChartConfig?.setChartType ? tvWidget.activeChart().setChartType(window?.encodedChartData?.advanceChartConfig?.setChartType) : tvWidget.activeChart().setChartType(1);
+        //   const data = {
+        //     action: Actions.turnOnFeeds
+        //   }
+        //   window.ReactNativeWebView && window.ReactNativeWebView.postMessage(JSON.stringify(data));
+        // });
+
+        // window.tvWidget.headerReady().then(function () {
+        //   if (window.encodedChartData?.advanceChartConfig?.customFullScreenBtn) {
+        //     const button = tvWidget.createButton({ align: 'right' });
+        //     const fullscreenIcon = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 28 28" width="28" height="28"><path fill="currentColor" d="M8.5 6A2.5 2.5 0 0 0 6 8.5V11h1V8.5C7 7.67 7.67 7 8.5 7H11V6H8.5zM6 17v2.5A2.5 2.5 0 0 0 8.5 22H11v-1H8.5A1.5 1.5 0 0 1 7 19.5V17H6zM19.5 7H17V6h2.5A2.5 2.5 0 0 1 22 8.5V11h-1V8.5c0-.83-.67-1.5-1.5-1.5zM22 19.5V17h-1v2.5c0 .83-.67 1.5-1.5 1.5H17v1h2.5a2.5 2.5 0 0 0 2.5-2.5z"></path></svg>`;
+        //     button.innerHTML = `${fullscreenIcon}`;
+        //     button.addEventListener('click', function () { onFullScreen() });
+        //   }
+        // });
+      }
+    </script>
+  </head>
+
+  <body style="margin: 0px; padding: 0px;">
+    <div id="tv_chart_container" style="height:100vh; width: 100vw;"></div>
+  </body>
+</html>
