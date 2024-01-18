@@ -31,7 +31,7 @@ class AdvancedCharts extends StatelessWidget {
       body: InAppWebView(
         initialUrlRequest: URLRequest(
           url: WebUri(
-            "http://localhost:9901/index.html",
+            "http://127.0.0.1:9901/index.html",
           ),
         ),
         onWebViewCreated: (controller) {
