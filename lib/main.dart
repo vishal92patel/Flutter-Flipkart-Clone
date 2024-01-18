@@ -34,7 +34,7 @@ final darkTheme = ThemeData.dark().copyWith(
 
 final InAppLocalhostServer localhostServer = InAppLocalhostServer(
   documentRoot: 'assets/charting_library',
-  port: 9900,
+  port: 9901,
   shared: false,
 );
 
