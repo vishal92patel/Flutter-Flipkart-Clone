@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 import 'package:test_app/screens/base_screen.dart';
 
 final lightColorScheme = ColorScheme.fromSeed(
@@ -32,16 +31,8 @@ final darkTheme = ThemeData.dark().copyWith(
   ),
 );
 
-final InAppLocalhostServer localhostServer = InAppLocalhostServer(
-  documentRoot: 'assets/charting_library',
-  port: 9901,
-  shared: false,
-);
-
-Future<void> main() async {
+void main() {
   WidgetsFlutterBinding.ensureInitialized();
-  await localhostServer.start();
-
   runApp(const MyApp());
 }
 

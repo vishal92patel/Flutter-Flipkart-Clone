@@ -3,8 +3,8 @@ import 'package:test_app/screens/advanced_charts_screen.dart';
 import 'package:test_app/screens/cart_screen.dart';
 import 'package:test_app/screens/categories_screen.dart';
 import 'package:test_app/screens/home_screen.dart';
-import 'package:test_app/screens/notifications_screen.dart';
 
+import 'accounts_screen.dart';
 import 'main_tab.dart';
 
 class BaseScreen extends StatefulWidget {
@@ -18,8 +18,8 @@ class _BaseScreenState extends State<BaseScreen> {
   final List<Widget> screenList = [
     HomeScreen(),
     const CategoriesScreen(),
-    const NotificationsScreen(),
-    // const AccountsScreen(),
+    // const NotificationsScreen(),
+    const AccountsScreen(),
     const CartScreen(),
     const AdvancedCharts(),
   ];
