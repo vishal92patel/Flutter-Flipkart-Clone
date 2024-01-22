@@ -1,5 +1,5 @@
 window.addEventListener("message", (event) => {
-  onRealtimeCallback(event.data);
+  onRealtimeCallback && onRealtimeCallback(event.data);
 });
 window.addEventListener("flutterInAppWebViewPlatformReady", function (event) {
   // // send data from html to flutter

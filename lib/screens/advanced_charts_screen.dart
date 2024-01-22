@@ -1,5 +1,7 @@
+import 'dart:async';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_inappwebview/flutter_inappwebview.dart';
 
@@ -35,32 +37,39 @@ class AdvancedCharts extends StatefulWidget {
 }
 
 class _AdvancedChartsState extends State<AdvancedCharts> {
-  late InAppWebViewController? inAppWebViewController;
-  bool isServerStarted = false;
+  late InAppWebViewController? _inAppWebViewController;
+  bool _isServerStarted = false;
+  late final Timer _timer;
 
-  void fromFlutterToWebView() {
+  void fromFlutterToWebView(Timer t) {
     final data = {
-      "open": random.nextInt(1000) + 3000,
-      "close": random.nextInt(1000) + 3000,
-      "high": random.nextInt(1000) + 3000,
-      "low": random.nextInt(1000) + 3000,
+      "open": random.nextInt(10) + 3450,
+      "close": random.nextInt(10) + 3450,
+      "high": random.nextInt(10) + 3450,
+      "low": random.nextInt(10) + 3440,
       "time": DateTime.now().millisecondsSinceEpoch,
       "volume": random.nextInt(99) + 100,
     };
-    inAppWebViewController!.evaluateJavascript(source: """
+    _inAppWebViewController!.evaluateJavascript(source: """
       window.postMessage($data);
     """);
   }
 
   @override
   void initState() {
-    _setupLocalServer();
     super.initState();
+    _setupLocalServer();
+    _timer = Timer.periodic(
+        const Duration(
+          milliseconds: 500,
+        ),
+        fromFlutterToWebView);
   }
 
   @override
   void dispose() {
     localhostServer.close();
+    _timer.cancel();
     super.dispose();
   }
 
@@ -68,7 +77,7 @@ class _AdvancedChartsState extends State<AdvancedCharts> {
     WidgetsFlutterBinding.ensureInitialized();
     await localhostServer.start();
     setState(() {
-      isServerStarted = true;
+      _isServerStarted = true;
     });
   }
 
@@ -78,7 +87,7 @@ class _AdvancedChartsState extends State<AdvancedCharts> {
       appBar: AppBar(
         title: const Text("Advanced Charts"),
       ),
-      body: isServerStarted
+      body: _isServerStarted
           ? InAppWebView(
               initialUrlRequest: URLRequest(
                 url: WebUri(
@@ -87,7 +96,7 @@ class _AdvancedChartsState extends State<AdvancedCharts> {
               ),
               onWebViewCreated: (controller) {
                 setState(() {
-                  inAppWebViewController = controller;
+                  _inAppWebViewController = controller;
                 });
                 controller.addJavaScriptHandler(
                   handlerName: "initiate",
@@ -110,16 +119,18 @@ class _AdvancedChartsState extends State<AdvancedCharts> {
               // },
               onConsoleMessage: (controller, consoleMessage) {
                 setState(() {
-                  inAppWebViewController = controller;
+                  _inAppWebViewController = controller;
                 });
-                print("${consoleMessage} vishal");
+                if (kDebugMode) {
+                  print("$consoleMessage");
+                }
               },
             )
           : null,
-      floatingActionButton: FloatingActionButton(
-        onPressed: fromFlutterToWebView,
-        child: const Icon(Icons.arrow_upward),
-      ),
+      // floatingActionButton: FloatingActionButton(
+      //   onPressed: fromFlutterToWebView,
+      //   child: const Icon(Icons.arrow_upward),
+      // ),
     );
   }
 }
