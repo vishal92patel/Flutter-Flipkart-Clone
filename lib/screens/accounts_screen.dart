@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/bloc/user/user_bloc.dart';
 
 import 'accounts/widgets/login.dart';
 
@@ -13,11 +15,14 @@ class AccountsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Accounts"),
         ),
-        // body: BlocProvider(
-        //   create: (ctx) => LoginBloc(),
-        //   child: const Login(),
-        // )),
-        body: const Login(),
+        body: BlocBuilder<UserBloc, UserState>(builder: (
+          context,
+          state,
+        ) {
+          print("${state} vvpp");
+          return state.userId.isNotEmpty ? Text(state.name) : const Login();
+          // return state.userId.isNotEmpty ? Text(state.name) : Text(state.name);
+        }),
       ),
     );
   }

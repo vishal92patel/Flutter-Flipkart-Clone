@@ -5,6 +5,7 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:test_app/bloc/modal/user_modal.dart';
+import 'package:test_app/bloc/user/user_bloc.dart';
 
 import '../modal/login_form_field_modal.dart';
 
@@ -25,13 +26,14 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             error: '',
           ),
         )) {
-    on<InitEvent>(_initEvent);
+    on<LoginInitEvent>(_loginInitEvent);
     on<EmailChangedEvent>(_emailChangedEvent);
     on<PasswordChangedEvent>(_passwordChangedEvent);
     on<SignInEvent>(_signInEvent);
   }
 
-  Future<void> _initEvent(InitEvent event, Emitter<LoginState> emitter) async {
+  Future<void> _loginInitEvent(
+      LoginInitEvent event, Emitter<LoginState> emitter) async {
     emitter(state.copyWith());
   }
 
@@ -102,6 +104,13 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
           isFail: false,
           failResponse: '',
         ));
+        UserBloc().add(
+          SetUserEvent(
+            userId: user.userId,
+            emailId: user.emailId,
+            name: user.name,
+          ),
+        );
       } else {
         emitter(state.copyWith(
           isLoading: false,

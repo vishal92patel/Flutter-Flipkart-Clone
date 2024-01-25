@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/bloc/user/user_bloc.dart';
 import 'package:test_app/screens/accounts/bloc/login_bloc.dart';
 import 'package:test_app/screens/base_screen.dart';
 
@@ -43,8 +44,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (ctx) => LoginBloc()..add(const InitEvent()),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => UserBloc()..add(const UserInitEvent()),
+        ),
+        BlocProvider(
+          create: (ctx) => LoginBloc()..add(const LoginInitEvent()),
+        ),
+      ],
       child: MaterialApp(
         darkTheme: darkTheme,
         theme: lightTheme,
