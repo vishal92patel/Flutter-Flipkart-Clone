@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/screens/accounts/bloc/login_bloc.dart';
 import 'package:test_app/screens/base_screen.dart';
 
 final lightColorScheme = ColorScheme.fromSeed(
@@ -41,12 +43,15 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      darkTheme: darkTheme,
-      theme: lightTheme,
-      home: const BaseScreen(),
-      themeMode: ThemeMode.system,
-      // themeMode: ThemeMode.dark,
+    return BlocProvider(
+      create: (ctx) => LoginBloc()..add(const InitEvent()),
+      child: MaterialApp(
+        darkTheme: darkTheme,
+        theme: lightTheme,
+        home: const BaseScreen(),
+        themeMode: ThemeMode.system,
+        // themeMode: ThemeMode.dark,
+      ),
     );
   }
 }

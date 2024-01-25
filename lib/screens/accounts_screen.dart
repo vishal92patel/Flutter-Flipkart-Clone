@@ -13,6 +13,10 @@ class AccountsScreen extends StatelessWidget {
         appBar: AppBar(
           title: const Text("Accounts"),
         ),
+        // body: BlocProvider(
+        //   create: (ctx) => LoginBloc(),
+        //   child: const Login(),
+        // )),
         body: const Login(),
       ),
     );
