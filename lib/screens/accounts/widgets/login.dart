@@ -14,11 +14,10 @@ class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
-  void onSignInPress(BuildContext context) {
-    // context.read<LoginBloc>().add(LoginRequested(
-    //       email: emailController.text.trim(),
-    //       password: passwordController.text.trim(),
-    //     ));
+  void onSignInPress() {
+    context.read<LoginBloc>().add(SignInEvent(
+        email: emailController.text.trim(),
+        password: passwordController.text.trim()));
   }
 
   void onChangedEmail(String txt, bool isDirty) {
@@ -110,6 +109,7 @@ class _LoginState extends State<Login> {
                     Focus(
                       onFocusChange: (e) => onFocusChangeEmail(e),
                       child: TextField(
+                        readOnly: state.isLoading == true,
                         onChanged: (e) => onChangedEmail(
                           e,
                           state.email.isDirty,
@@ -134,6 +134,7 @@ class _LoginState extends State<Login> {
                     Focus(
                       onFocusChange: (e) => onFocusChangePassword(e),
                       child: TextField(
+                        readOnly: state.isLoading == true,
                         onChanged: (e) => onChangedPassword(
                           e,
                           state.password.isDirty,
@@ -156,13 +157,25 @@ class _LoginState extends State<Login> {
                     const SizedBox(
                       height: 20,
                     ),
+                    if (state.isFail == true)
+                      Text(
+                        state.failResponse,
+                        style: TextStyle(
+                          color: theme.colorScheme.error,
+                          fontSize: 14,
+                        ),
+                      ),
+                    if (state.isFail == true)
+                      const SizedBox(
+                        height: 10,
+                      ),
                     ElevatedButton(
                       onPressed: (state.email.value.isNotEmpty &&
                                   state.email.error!.isEmpty &&
                                   state.password.value.isNotEmpty &&
                                   state.password.error!.isEmpty) ==
                               true
-                          ? () => onSignInPress(context)
+                          ? () => onSignInPress()
                           : null,
                       style: ElevatedButton.styleFrom(
                         backgroundColor: theme.colorScheme.primaryContainer,
@@ -170,13 +183,19 @@ class _LoginState extends State<Login> {
                           borderRadius: BorderRadius.circular(10),
                         ),
                       ),
-                      child: const Text(
-                        "SIGN IN",
-                        style: TextStyle(
-                          fontSize: 16,
-                        ),
-                      ),
-                    )
+                      child: state.isLoading != true
+                          ? const Text(
+                              "SIGN IN",
+                              style: TextStyle(
+                                fontSize: 16,
+                              ),
+                            )
+                          : const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(),
+                            ),
+                    ),
                   ],
                 ),
               ),

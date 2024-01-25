@@ -2,7 +2,11 @@ class LoginFormFieldModal {
   final String value;
   final String? error;
   final bool isDirty;
-  LoginFormFieldModal({required this.value, this.error, required this.isDirty});
+  LoginFormFieldModal({
+    required this.value,
+    required this.isDirty,
+    this.error,
+  });
 
   // LoginFormFieldModal copyWith({
   //   final String? value,

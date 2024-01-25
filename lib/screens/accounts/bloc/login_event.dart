@@ -26,3 +26,9 @@ class PasswordChangedEvent extends LoginEvent {
   @override
   List<Object?> get props => [password];
 }
+
+class SignInEvent extends LoginEvent {
+  final String email;
+  final String password;
+  const SignInEvent({required this.email, required this.password});
+}

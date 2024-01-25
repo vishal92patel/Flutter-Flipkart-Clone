@@ -1,5 +1,10 @@
+import 'dart:convert';
+import 'dart:core';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:http/http.dart' as http;
+import 'package:test_app/bloc/modal/user_modal.dart';
 
 import '../modal/login_form_field_modal.dart';
 
@@ -9,12 +14,21 @@ part 'login_state.dart';
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc()
       : super(LoginState(
-          email: LoginFormFieldModal(value: '', isDirty: false),
-          password: LoginFormFieldModal(value: '', isDirty: false),
+          email: LoginFormFieldModal(
+            value: 'vishal92_patel@yahoo.com',
+            isDirty: false,
+            error: '',
+          ),
+          password: LoginFormFieldModal(
+            value: '123456789',
+            isDirty: false,
+            error: '',
+          ),
         )) {
     on<InitEvent>(_initEvent);
     on<EmailChangedEvent>(_emailChangedEvent);
     on<PasswordChangedEvent>(_passwordChangedEvent);
+    on<SignInEvent>(_signInEvent);
   }
 
   Future<void> _initEvent(InitEvent event, Emitter<LoginState> emitter) async {
@@ -46,6 +60,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         error: msg,
         isDirty: event.email.isDirty,
       ),
+      isFail: false,
     ));
   }
 
@@ -64,12 +79,48 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         error: msg,
         isDirty: event.password.isDirty,
       ),
+      isFail: false,
     ));
   }
+
+  Future<void> _signInEvent(
+      SignInEvent event, Emitter<LoginState> emitter) async {
+    emitter(state.copyWith(
+      isLoading: true,
+      isSuccess: false,
+      isFail: false,
+      failResponse: '',
+    ));
+    final response =
+        await http.get(Uri.parse('https://api.npoint.io/1f2f29ba66efcac29efa'));
+    if (response.statusCode == 200) {
+      UserModal user = UserModal.fromJson(jsonDecode(response.body));
+      if (event.email == user.emailId) {
+        emitter(state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          isFail: false,
+          failResponse: '',
+        ));
+      } else {
+        emitter(state.copyWith(
+          isLoading: false,
+          isSuccess: false,
+          isFail: true,
+          failResponse: 'Invalid Credential.',
+        ));
+      }
+    } else {
+      throw Exception('Failed to load album');
+    }
+  }
+
+  // Future<void> _signInFailEvent(
+  //     SignInFailEvent event, Emitter<LoginState> emitter) async {}
 
   @override
   void onChange(Change<LoginState> change) {
     super.onChange(change);
-    // print("${change.currentState.email.value} vishal");
+    // print("${change.currentState} vishal");
   }
 }
