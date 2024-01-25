@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,6 +15,7 @@ class UserBloc extends Bloc<UserEvent, UserState> {
         )) {
     on<UserInitEvent>(_userInitEvent);
     on<SetUserEvent>(_setUserEvent);
+    on<LogoutUserEvent>(_logoutUserEvent);
   }
 
   Future<void> _userInitEvent(
@@ -29,9 +32,25 @@ class UserBloc extends Bloc<UserEvent, UserState> {
     ));
   }
 
+  Future<void> _logoutUserEvent(
+      LogoutUserEvent event, Emitter<UserState> emitter) async {
+    emitter(state.copyWith(
+      isLoading: true,
+    ));
+
+    await Future.delayed(const Duration(seconds: 1));
+
+    emitter(state.copyWith(
+      emailId: '',
+      name: '',
+      userId: '',
+      isLoading: false,
+    ));
+  }
+
   @override
   void onChange(Change<UserState> change) {
     super.onChange(change);
-    print("${change} vishal");
+    // print("${change} vishal");
   }
 }

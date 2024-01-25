@@ -21,3 +21,7 @@ class SetUserEvent extends UserEvent {
     required this.name,
   });
 }
+
+class LogoutUserEvent extends UserEvent {
+  const LogoutUserEvent();
+}

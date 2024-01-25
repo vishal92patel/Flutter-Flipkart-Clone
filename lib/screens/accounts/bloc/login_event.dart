@@ -32,3 +32,7 @@ class SignInEvent extends LoginEvent {
   final String password;
   const SignInEvent({required this.email, required this.password});
 }
+
+class SignInLogoutEvent extends LoginEvent {
+  const SignInLogoutEvent();
+}

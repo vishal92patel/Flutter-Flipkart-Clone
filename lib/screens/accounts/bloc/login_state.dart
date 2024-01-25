@@ -7,6 +7,7 @@ class LoginState extends Equatable {
   final bool? isSuccess;
   final bool? isFail;
   final String failResponse;
+  final UserModal user;
 
   const LoginState({
     required this.email,
@@ -15,24 +16,25 @@ class LoginState extends Equatable {
     this.isSuccess = false,
     this.isFail = false,
     this.failResponse = '',
+    required this.user,
   });
 
-  LoginState copyWith({
-    LoginFormFieldModal? email,
-    LoginFormFieldModal? password,
-    bool? isLoading,
-    bool? isSuccess,
-    bool? isFail,
-    String? failResponse,
-  }) {
+  LoginState copyWith(
+      {LoginFormFieldModal? email,
+      LoginFormFieldModal? password,
+      bool? isLoading,
+      bool? isSuccess,
+      bool? isFail,
+      String? failResponse,
+      UserModal? user}) {
     return LoginState(
-      email: email ?? this.email,
-      password: password ?? this.password,
-      isLoading: isLoading ?? this.isLoading,
-      isSuccess: isSuccess ?? this.isSuccess,
-      isFail: isFail ?? this.isFail,
-      failResponse: failResponse ?? this.failResponse,
-    );
+        email: email ?? this.email,
+        password: password ?? this.password,
+        isLoading: isLoading ?? this.isLoading,
+        isSuccess: isSuccess ?? this.isSuccess,
+        isFail: isFail ?? this.isFail,
+        failResponse: failResponse ?? this.failResponse,
+        user: user ?? this.user);
   }
 
   @override
@@ -43,5 +45,6 @@ class LoginState extends Equatable {
         isSuccess,
         isFail,
         failResponse,
+        user,
       ];
 }

@@ -11,4 +11,12 @@ class UserModal {
       name: json['name'],
     );
   }
+
+  factory UserModal.empty() {
+    return UserModal(
+      userId: '',
+      emailId: '',
+      name: '',
+    );
+  }
 }

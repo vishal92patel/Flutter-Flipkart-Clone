@@ -5,7 +5,6 @@ import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:test_app/bloc/modal/user_modal.dart';
-import 'package:test_app/bloc/user/user_bloc.dart';
 
 import '../modal/login_form_field_modal.dart';
 
@@ -25,11 +24,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
             isDirty: false,
             error: '',
           ),
+          user: UserModal(
+            userId: '',
+            emailId: '',
+            name: '',
+          ),
         )) {
     on<LoginInitEvent>(_loginInitEvent);
     on<EmailChangedEvent>(_emailChangedEvent);
     on<PasswordChangedEvent>(_passwordChangedEvent);
     on<SignInEvent>(_signInEvent);
+    on<SignInLogoutEvent>(_signInLogoutEvent);
   }
 
   Future<void> _loginInitEvent(
@@ -56,14 +61,16 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       msg = "Email format is not Valid.";
     }
 
-    emitter(state.copyWith(
-      email: LoginFormFieldModal(
-        value: event.email.value,
-        error: msg,
-        isDirty: event.email.isDirty,
+    emitter(
+      state.copyWith(
+        email: LoginFormFieldModal(
+          value: event.email.value,
+          error: msg,
+          isDirty: event.email.isDirty,
+        ),
+        isFail: false,
       ),
-      isFail: false,
-    ));
+    );
   }
 
   Future<void> _passwordChangedEvent(
@@ -75,57 +82,71 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       msg = "Password cannot be less than 6 digit.";
     }
 
-    emitter(state.copyWith(
-      password: LoginFormFieldModal(
-        value: event.password.value,
-        error: msg,
-        isDirty: event.password.isDirty,
+    emitter(
+      state.copyWith(
+        password: LoginFormFieldModal(
+          value: event.password.value,
+          error: msg,
+          isDirty: event.password.isDirty,
+        ),
+        isFail: false,
       ),
-      isFail: false,
-    ));
+    );
   }
 
   Future<void> _signInEvent(
       SignInEvent event, Emitter<LoginState> emitter) async {
-    emitter(state.copyWith(
-      isLoading: true,
-      isSuccess: false,
-      isFail: false,
-      failResponse: '',
-    ));
+    emitter(
+      state.copyWith(
+        isLoading: true,
+        isSuccess: false,
+        isFail: false,
+        failResponse: '',
+        user: UserModal.empty(),
+      ),
+    );
     final response =
         await http.get(Uri.parse('https://api.npoint.io/1f2f29ba66efcac29efa'));
     if (response.statusCode == 200) {
       UserModal user = UserModal.fromJson(jsonDecode(response.body));
       if (event.email == user.emailId) {
-        emitter(state.copyWith(
-          isLoading: false,
-          isSuccess: true,
-          isFail: false,
-          failResponse: '',
-        ));
-        UserBloc().add(
-          SetUserEvent(
-            userId: user.userId,
-            emailId: user.emailId,
-            name: user.name,
+        emitter(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: true,
+            isFail: false,
+            failResponse: '',
+            user: user,
           ),
         );
       } else {
-        emitter(state.copyWith(
-          isLoading: false,
-          isSuccess: false,
-          isFail: true,
-          failResponse: 'Invalid Credential.',
-        ));
+        emitter(
+          state.copyWith(
+            isLoading: false,
+            isSuccess: false,
+            isFail: true,
+            failResponse: 'Invalid Credential.',
+            user: UserModal.empty(),
+          ),
+        );
       }
     } else {
       throw Exception('Failed to load album');
     }
   }
 
-  // Future<void> _signInFailEvent(
-  //     SignInFailEvent event, Emitter<LoginState> emitter) async {}
+  Future<void> _signInLogoutEvent(
+      SignInLogoutEvent event, Emitter<LoginState> emitter) async {
+    emitter(
+      state.copyWith(
+        isLoading: false,
+        isSuccess: false,
+        isFail: false,
+        failResponse: '',
+        user: UserModal.empty(),
+      ),
+    );
+  }
 
   @override
   void onChange(Change<LoginState> change) {

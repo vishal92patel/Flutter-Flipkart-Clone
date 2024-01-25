@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:test_app/bloc/user/user_bloc.dart';
 import 'package:test_app/screens/accounts/bloc/login_bloc.dart';
 import 'package:test_app/screens/accounts/modal/login_form_field_modal.dart';
 
@@ -80,7 +81,18 @@ class _LoginState extends State<Login> {
     emailController.text = context.read<LoginBloc>().state.email.value;
     passwordController.text = context.read<LoginBloc>().state.password.value;
 
-    return BlocBuilder<LoginBloc, LoginState>(
+    return BlocConsumer<LoginBloc, LoginState>(
+      listener: (context, state) {
+        if (state.isSuccess == true && state.user.name.isNotEmpty) {
+          context.read<UserBloc>().add(
+                SetUserEvent(
+                  userId: state.user.userId,
+                  emailId: state.user.emailId,
+                  name: state.user.name,
+                ),
+              );
+        }
+      },
       builder: (context, state) {
         return Center(
           child: ConstrainedBox(
