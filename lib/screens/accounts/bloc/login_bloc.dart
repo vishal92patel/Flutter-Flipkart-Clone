@@ -15,12 +15,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   LoginBloc()
       : super(LoginState(
           email: LoginFormFieldModal(
-            value: 'vishal92_patel@yahoo.com',
+            value: '',
             isDirty: false,
             error: '',
           ),
           password: LoginFormFieldModal(
-            value: '123456789',
+            value: '',
             isDirty: false,
             error: '',
           ),
@@ -139,6 +139,8 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       SignInLogoutEvent event, Emitter<LoginState> emitter) async {
     emitter(
       state.copyWith(
+        email: LoginFormFieldModal(value: '', isDirty: false, error: ''),
+        password: LoginFormFieldModal(value: '', isDirty: false, error: ''),
         isLoading: false,
         isSuccess: false,
         isFail: false,
