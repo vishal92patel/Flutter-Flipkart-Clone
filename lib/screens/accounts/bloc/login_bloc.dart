@@ -1,18 +1,18 @@
-import 'dart:convert';
 import 'dart:core';
 
 import 'package:equatable/equatable.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:http/http.dart' as http;
 import 'package:test_app/bloc/modal/user_modal.dart';
 
 import '../modal/login_form_field_modal.dart';
+import '../repository/user_repository.dart';
 
 part 'login_event.dart';
 part 'login_state.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc()
+  final UserRepository userRepository;
+  LoginBloc(this.userRepository)
       : super(LoginState(
           email: LoginFormFieldModal(
             value: '',
@@ -105,33 +105,27 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
         user: UserModal.empty(),
       ),
     );
-    final response =
-        await http.get(Uri.parse('https://api.npoint.io/1f2f29ba66efcac29efa'));
-    if (response.statusCode == 200) {
-      UserModal user = UserModal.fromJson(jsonDecode(response.body));
-      if (event.email == user.emailId) {
-        emitter(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: true,
-            isFail: false,
-            failResponse: '',
-            user: user,
-          ),
-        );
-      } else {
-        emitter(
-          state.copyWith(
-            isLoading: false,
-            isSuccess: false,
-            isFail: true,
-            failResponse: 'Invalid Credential.',
-            user: UserModal.empty(),
-          ),
-        );
-      }
+    final response = await userRepository.getUser();
+    if (event.email == response.emailId) {
+      emitter(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: true,
+          isFail: false,
+          failResponse: '',
+          user: response,
+        ),
+      );
     } else {
-      throw Exception('Failed to load album');
+      emitter(
+        state.copyWith(
+          isLoading: false,
+          isSuccess: false,
+          isFail: true,
+          failResponse: 'Invalid Credential.',
+          user: UserModal.empty(),
+        ),
+      );
     }
   }
 
