@@ -39,7 +39,7 @@ class AdvancedCharts extends StatefulWidget {
 class _AdvancedChartsState extends State<AdvancedCharts> {
   late InAppWebViewController? _inAppWebViewController;
   bool _isServerStarted = false;
-  late final Timer _timer;
+  // late final Timer _timer;
 
   void fromFlutterToWebView(Timer t) {
     final data = {
@@ -59,17 +59,17 @@ class _AdvancedChartsState extends State<AdvancedCharts> {
   void initState() {
     super.initState();
     _setupLocalServer();
-    _timer = Timer.periodic(
-        const Duration(
-          milliseconds: 500,
-        ),
-        fromFlutterToWebView);
+    // _timer = Timer.periodic(
+    //     const Duration(
+    //       milliseconds: 500,
+    //     ),
+    //     fromFlutterToWebView);
   }
 
   @override
   void dispose() {
     localhostServer.close();
-    _timer.cancel();
+    // _timer.cancel();
     super.dispose();
   }
 

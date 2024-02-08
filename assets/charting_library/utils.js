@@ -88,7 +88,7 @@ async function getData(requestPayload) {
       duration: requestPayload.duration,
     };
     const response = await fetch(
-      "https://dev-v2.alphansg.net/charts/v1/historical/equity/chart/data",
+      "https://devrnd-charts.multipie.co/v1/historical/equity/chart/data",
       {
         method: "POST",
         headers: {
